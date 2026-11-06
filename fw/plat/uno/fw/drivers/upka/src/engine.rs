@@ -1036,9 +1036,7 @@ fn rsa_private_args(
     } else {
         2 * mod_size
     };
-    ensure_input(
-        key_len >= min_key_len && input_len == mod_size && output_len == mod_size,
-    )?;
+    ensure_input(key_len >= min_key_len && input_len == mod_size && output_len == mod_size)?;
 
     // CRT needs a non-null `param2` pointer; passing `0` (as for non-CRT)
     // makes the PKA dereference a null operand and fault with a bus error.
