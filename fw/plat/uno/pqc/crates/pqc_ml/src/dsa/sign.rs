@@ -142,7 +142,11 @@ pub fn sign_internal(
                 if kept_whole || !a_cached || (t >= held && spill.is_none()) {
                     // Otherwise the first attempt, or an element with
                     // nowhere to be kept: derive it.
-                    let a = if kept_whole { &mut a_polys[t] } else { &mut c_hat };
+                    let a = if kept_whole {
+                        &mut a_polys[t]
+                    } else {
+                        &mut c_hat
+                    };
                     if !(kept_whole && a_cached) {
                         sampling::poly_uniform(a, rho, i as u8, j as u8);
                     }
@@ -158,10 +162,7 @@ pub fn sign_internal(
                                 &c_hat,
                             );
                         } else if t < held {
-                            crate::spill::pack(
-                                near_elem(near1, near2, t - cache_slots),
-                                &c_hat,
-                            );
+                            crate::spill::pack(near_elem(near1, near2, t - cache_slots), &c_hat);
                         } else if let Some(p) = spill {
                             // SAFETY: `p` is this core's own slot, sized for
                             // one packed element by `spill::init`.
@@ -440,7 +441,11 @@ fn close_ok(
         let mut cs = 0i32;
         for &e in c {
             let p = (e & 0xff) as usize;
-            let v = if n >= p { scratch[n - p] } else { -scratch[n + N - p] };
+            let v = if n >= p {
+                scratch[n - p]
+            } else {
+                -scratch[n + N - p]
+            };
             cs += if e & 0x100 != 0 { -v } else { v };
         }
         if ((a[n] >> shift) + sign * cs).abs() >= bound {

@@ -50,7 +50,10 @@ static mut NEAR: [(*mut i32, usize); 2] = [(core::ptr::null_mut(), 0); 2];
 /// `base` must be valid for `words` `i32` reads and writes, word aligned,
 /// and reserved for this core alone for the lifetime of the program.
 pub unsafe fn init_near(base: *mut i32, words: usize) {
-    if let Some(slot) = (*core::ptr::addr_of_mut!(NEAR)).iter_mut().find(|r| r.0.is_null()) {
+    if let Some(slot) = (*core::ptr::addr_of_mut!(NEAR))
+        .iter_mut()
+        .find(|r| r.0.is_null())
+    {
         *slot = (base, words);
     }
 }
